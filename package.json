@@ -1,5 +1,5 @@
 {
-  "name": "@duskman72/preact-graphql",
+  "name": "@k8s-cloud-io/preact-graphql",
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
