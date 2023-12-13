@@ -25,8 +25,12 @@ export class InMemoryCache implements CacheInterface {
     }
 
     public isValid = (key: string): boolean => {
-        const value = InMemoryCache.cache[key] || undefined;
+        let value = InMemoryCache.cache[key] || undefined;
         const currentTimestamp = new Date().getTime();
+        if( value && value.timestamp + 5000 <= currentTimestamp ) {
+            delete InMemoryCache.cache[key];
+            value = undefined;
+        }
         return value && value.timestamp + 5000 > currentTimestamp;
     }
 }
