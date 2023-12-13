@@ -5,9 +5,8 @@ import {
     MutationProps,
     QueryProps,
 } from './props';
-import crypto from "crypto";
+import CryptoJS from 'crypto-js';
 import {GraphQLClientError, GraphQLOperationError} from "./GraphQLError";
-import {InMemoryCache} from "./InMemoryCache";
 
 export class GraphQLClient {
     private opts: GraphQLClientProps;
@@ -64,10 +63,12 @@ export class GraphQLClient {
         }
 
         const requestBody = JSON.stringify(data);
-        const md5sum = crypto.createHash('md5');
-        const hash = md5sum.update(requestBody, 'utf8').digest('hex');
+        const hash = CryptoJS.MD5(requestBody).toString(CryptoJS.enc.Hex);
         if( this.opts.cache.has(hash) ) {
-            return this.opts.cache.get(hash);
+            const cache = this.opts.cache.get(hash);
+            return new Promise((resolve, _) => {
+                resolve(cache);
+            });
         }
 
         return new Promise((resolve, reject) => {
@@ -82,7 +83,7 @@ export class GraphQLClient {
                 .then((result) => {
                     const data = result;
                     if( data.data[operationName] ) {
-                        this.opts.cache.put(hash, requestBody);
+                        this.opts.cache.put(hash, data.data);
                         resolve(data.data);
                         return;
                     }
