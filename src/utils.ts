@@ -1,6 +1,5 @@
 import {DocumentNode} from "./props";
-import {GraphQLParseError} from "./GraphQLParseError";
-import {GraphQLOperationError} from "./GraphQLOperation";
+import {GraphQLOperationError, GraphQLParseError} from "./GraphQLError";
 
 export const gql = (str: TemplateStringsArray): DocumentNode => {
     const trimmed = str[0].trim();

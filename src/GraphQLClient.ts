@@ -5,13 +5,14 @@ import {
     MutationProps,
     QueryProps,
 } from './props';
+import {GraphQLClientError, GraphQLOperationError} from "./GraphQLError";
 
 export class GraphQLClient {
     private opts: GraphQLClientProps;
     constructor(props: GraphQLClientProps) {
         this.opts = props;
         if (!props) {
-            throw new Error(
+            throw new GraphQLClientError(
                 'Unable to instanciate GraphQLClient: missing properties',
             );
         }
@@ -40,7 +41,7 @@ export class GraphQLClient {
 
         if (requestType === 'query') {
             if (operationType !== 'query') {
-                throw new Error(
+                throw new GraphQLOperationError(
                     'Unable to start request: operation must be of type query: ' + operationType,
                 );
             }
@@ -51,7 +52,7 @@ export class GraphQLClient {
 
         if (requestType === 'mutation') {
             if (operationType !== 'mutation') {
-                throw new Error(
+                throw new GraphQLOperationError(
                     'Unable to start request: operation must be of type mutation',
                 );
             }
