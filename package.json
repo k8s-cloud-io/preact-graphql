@@ -1,6 +1,6 @@
 {
   "name": "@k8s-cloud-io/preact-graphql",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
@@ -12,13 +12,12 @@
     "preact": "^10.19.3"
   },
   "dependencies": {
-    "@types/crypto-js": "^4.2.1",
-    "crypto-js": "^4.2.0",
     "preact": "^10.19.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "path": "^0.12.7",
+    "pure-md5": "^0.1.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",

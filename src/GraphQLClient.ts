@@ -5,7 +5,7 @@ import {
     MutationProps,
     QueryProps,
 } from './props';
-import CryptoJS from 'crypto-js';
+import {md5} from 'pure-md5';
 import {GraphQLClientError, GraphQLOperationError} from "./GraphQLError";
 
 export class GraphQLClient {
@@ -63,7 +63,7 @@ export class GraphQLClient {
         }
 
         const requestBody = JSON.stringify(data);
-        const hash = CryptoJS.MD5(requestBody).toString(CryptoJS.enc.Hex);
+        const hash = `hash_${md5(requestBody)}`;
         if( this.opts.cache.has(hash) ) {
             const cache = this.opts.cache.get(hash);
             return new Promise((resolve, _) => {
