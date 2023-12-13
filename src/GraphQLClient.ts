@@ -5,7 +5,9 @@ import {
     MutationProps,
     QueryProps,
 } from './props';
+import crypto from "crypto";
 import {GraphQLClientError, GraphQLOperationError} from "./GraphQLError";
+import {InMemoryCache} from "./InMemoryCache";
 
 export class GraphQLClient {
     private opts: GraphQLClientProps;
@@ -61,7 +63,12 @@ export class GraphQLClient {
             });
         }
 
-        // TODO check if data is in cache and valid
+        const requestBody = JSON.stringify(data);
+        const md5sum = crypto.createHash('md5');
+        const hash = md5sum.update(requestBody, 'utf8').digest('hex');
+        if( this.opts.cache.has(hash) ) {
+            return this.opts.cache.get(hash);
+        }
 
         return new Promise((resolve, reject) => {
             fetch(this.opts.uri, {
@@ -69,12 +76,13 @@ export class GraphQLClient {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: requestBody,
             })
                 .then((result) => result.json())
                 .then((result) => {
                     const data = result;
                     if( data.data[operationName] ) {
+                        this.opts.cache.put(hash, requestBody);
                         resolve(data.data);
                         return;
                     }

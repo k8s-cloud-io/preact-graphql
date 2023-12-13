@@ -2,24 +2,31 @@ import { CacheInterface } from './CacheInterface';
 import { KeyValuePair } from './props';
 
 export class InMemoryCache implements CacheInterface {
-    private static instance: InMemoryCache;
     private static cache: KeyValuePair;
 
     public constructor() {
-        if (!InMemoryCache.instance) {
-            InMemoryCache.instance = this;
+        InMemoryCache.cache = {}
+    }
+
+    public put(key: string, value: any) {
+        InMemoryCache.cache[key] = {
+            value,
+            timestamp: new Date().getTime()
         }
     }
 
-    public static getInstance = () => {
-        return InMemoryCache.instance;
+    public get = (key: string): any => {
+        if(!this.isValid(key)) return null;
+        return InMemoryCache.cache[key].value;
     };
 
-    public put(key: string, value: any) {
-        InMemoryCache.cache[key] = value;
+    public has = (key: string): boolean => {
+        return this.isValid(key);
     }
 
-    public get = (key: string): any => {
-        return InMemoryCache.cache[key];
-    };
+    public isValid = (key: string): boolean => {
+        const value = InMemoryCache.cache[key] || undefined;
+        const currentTimestamp = new Date().getTime();
+        return value && value.timestamp + 5000 > currentTimestamp;
+    }
 }
