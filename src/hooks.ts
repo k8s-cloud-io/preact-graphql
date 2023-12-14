@@ -7,9 +7,9 @@ export const useGraphQLClient = () => {
 }
 
 export const useQuery = (props: QueryProps) => {
-    const client = useContext(GraphQLContext);
-    const [loaded, setLoaded] = useState(false);
+    const client = useContext(GraphQLContext)
     const [state, setState] = useState<GraphQLLoadingState>({
+        loaded: false,
         loading: false,
         data: null,
         error: null,
@@ -17,20 +17,18 @@ export const useQuery = (props: QueryProps) => {
     });
 
     const refresh = () => {
-        setLoaded(() => {
-            setState({
-                ...state,
-                loading: false,
-                data: null,
-                error: null,
-                client
-            })
-            return false;
+        setState({
+            ...state,
+            loaded: false,
+            loading: false,
+            data: null,
+            error: null,
+            client
         })
     }
 
     useEffect(() => {
-        if (!loaded && !state.loading) {
+        if (!state.loaded && !state.loading) {
             setState({
                 ...state,
                 loading: true,
@@ -39,28 +37,26 @@ export const useQuery = (props: QueryProps) => {
             });
             client
                 .query(props)
-                .then((result) => {
-                    setLoaded(() => {
-                        setState({
-                            ...state,
-                            data: result,
-                        });
-                        return true;
+                .then((result: any) => {
+                    setState({
+                        ...state,
+                        loaded: true,
+                        loading: false,
+                        data: result,
                     });
                 })
-                .catch((e) => {
-                    setLoaded(() => {
-                        setState({
-                            ...state,
-                            error: {
-                                message: e.message,
-                            },
-                        });
-                        return true;
+                .catch((e: any) => {
+                    setState({
+                        ...state,
+                        loaded: true,
+                        loading: false,
+                        error: {
+                            message: e.message,
+                        },
                     });
                 });
         }
-    }, [loaded, state.loading]);
+    }, [state.loaded, state.loading]);
 
     return {
         ...state,
@@ -70,8 +66,8 @@ export const useQuery = (props: QueryProps) => {
 
 export const useMutation = (props: MutationProps) => {
     const client = useContext(GraphQLContext);
-    const [loaded, setLoaded] = useState(false);
     const [state, setState] = useState<GraphQLLoadingState>({
+        loaded: false,
         loading: false,
         data: null,
         error: null,
@@ -79,50 +75,47 @@ export const useMutation = (props: MutationProps) => {
     });
 
     const refresh = () => {
-        setLoaded(() => {
-            setState({
-                ...state,
-                loading: false,
-                data: null,
-                error: null,
-                client
-            })
-            return false;
+        setState({
+            ...state,
+            loaded: false,
+            loading: false,
+            data: null,
+            error: null,
+            client
         })
     }
 
     useEffect(() => {
-        if (!loaded && !state.loading) {
+        if (!state.loaded && !state.loading) {
             setState({
                 ...state,
+                loaded: false,
                 loading: true,
                 data: null,
                 error: null,
             });
             client
                 .mutate(props)
-                .then((result) => {
-                    setLoaded(() => {
-                        setState({
-                            ...state,
-                            data: result,
-                        });
-                        return true;
+                .then((result: any) => {
+                    setState({
+                        ...state,
+                        loading: false,
+                        loaded: true,
+                        data: result,
                     });
                 })
-                .catch((e) => {
-                    setLoaded(() => {
-                        setState({
-                            ...state,
-                            error: {
-                                message: e.message,
-                            },
-                        });
-                        return true;
+                .catch((e: any) => {
+                    setState({
+                        ...state,
+                        loaded: true,
+                        loading: false,
+                        error: {
+                            message: e.message,
+                        },
                     });
                 });
         }
-    }, [loaded, state.loading]);
+    }, [state.loaded, state.loading]);
 
     return {
         ...state,

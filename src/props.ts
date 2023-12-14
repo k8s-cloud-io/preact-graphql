@@ -36,6 +36,7 @@ export type MutationProps = {
 };
 
 export type GraphQLLoadingState = {
+    loaded: boolean;
     loading: boolean;
     error: any;
     data: any;
