@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
-    "path": "^0.12.7",
     "pure-md5": "^0.1.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
