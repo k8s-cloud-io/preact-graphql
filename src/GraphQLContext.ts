@@ -1,2 +1,2 @@
-import {createContext} from "react";
+import {createContext} from "preact/compat";
 export const GraphQLContext = createContext(null);

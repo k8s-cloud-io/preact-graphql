@@ -1,5 +1,5 @@
 import { GraphQLLoadingState, MutationProps, QueryProps } from './props';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'preact/compat';
 import {GraphQLContext} from "./GraphQLContext";
 
 export const useGraphQLClient = () => {

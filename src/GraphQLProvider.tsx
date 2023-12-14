@@ -1,6 +1,6 @@
-import React from "react";
+import React from "preact";
 import {GraphQLClient} from "./GraphQLClient";
-import {PropsWithChildren} from "react";
+import {PropsWithChildren} from "preact/compat";
 import {GraphQLContext} from "./GraphQLContext";
 
 type GraphQLProviderProps = {
