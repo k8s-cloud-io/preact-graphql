@@ -1,6 +1,6 @@
 {
   "name": "@k8s-cloud-io/preact-graphql",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "dist/index.js",
   "source": "./src/index.tsx",
   "module": "dist/module.js",
@@ -10,6 +10,12 @@
     "build": "rm -rf dist && webpack --progress -c ./webpack.config.js",
     "build2": "rm -rf dist && parcel build",
     "deploy": "npm publish --access public"
+  },
+  "targets": {
+    "main": {
+      "optimize": true,
+      "sourceMap": false
+    }
   },
   "peerDependencies": {
     "preact": "^10.19.3"
