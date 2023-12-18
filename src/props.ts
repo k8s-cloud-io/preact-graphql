@@ -1,5 +1,4 @@
 import { CacheInterface } from './CacheInterface';
-import { GraphQLClient } from './GraphQLClient';
 
 export type KeyValuePair = {
     [key: string]: any;
@@ -40,5 +39,4 @@ export type GraphQLLoadingState = {
     loading: boolean;
     error: any;
     data: any;
-    client: GraphQLClient;
 };

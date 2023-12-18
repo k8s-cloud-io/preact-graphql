@@ -65,6 +65,7 @@ export class GraphQLClient {
         const requestBody = JSON.stringify(data);
         const hash = `hash_${md5(requestBody)}`;
         if( this.opts.cache.has(hash) ) {
+            // TODO extend object to resolved / error
             const cache = this.opts.cache.get(hash);
             return new Promise((resolve, _) => {
                 resolve(cache);
@@ -79,16 +80,17 @@ export class GraphQLClient {
                 },
                 body: requestBody,
             })
-                .then((result) => result.json())
-                .then((result) => {
-                    const data = result;
+                .then(async (result) => {
+                    const data = await result.json();
                     if( data.data[operationName] ) {
+                        // TODO extend object to resolved / error
                         this.opts.cache.put(hash, data.data);
                         resolve(data.data);
                         return;
                     }
                     reject(data.errors[0]);
                 })
+                // TODO extend object to resolved / error
                 .catch((e) => reject(e));
         });
     }

@@ -1,6 +1,5 @@
 export * from './CacheInterface';
 export * from './GraphQLClient';
-export * from "./GraphQLContext";
 export * from "./GraphQLError"
 export * from "./GraphQLProvider";
 export * from './hooks';
