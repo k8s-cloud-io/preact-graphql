@@ -1,5 +1,5 @@
 import { GraphQLLoadingState, MutationProps, QueryProps } from './props';
-import {useContext, useEffect, useState} from 'react';
+import {useCallback, useContext, useEffect, useState} from 'react';
 import {GraphQLContext} from ".";
 
 export const useGraphQLClient = () => {
@@ -15,16 +15,17 @@ export const useQuery = (props: QueryProps) => {
         error: null
     });
 
-    const refresh = () => {
+    const refresh = useCallback(() => {
         setState({
             loaded: false,
             loading: true,
             data: null,
             error: null,
         })
-    }
+    }, []);
 
     useEffect(() => {
+        if( state.loaded ) return;
             client
             .query(props)
             .then((result: any) => {
@@ -45,7 +46,7 @@ export const useQuery = (props: QueryProps) => {
                     },
                 });
             });
-    }, [state.loaded]);
+    }, [state.loaded, state.loading]);
 
     return {
         ...state,
@@ -63,16 +64,17 @@ export const useMutation = (props: MutationProps) => {
         error: null
     });
 
-    const refresh = () => {
+    const refresh = useCallback(() => {
         setState({
             loaded: false,
             loading: true,
             data: null,
             error: null,
         })
-    }
+    }, []);
 
     useEffect(() => {
+        if( state.loaded ) return;
             client
                 .mutate(props)
                 .then((result: any) => {
@@ -93,7 +95,7 @@ export const useMutation = (props: MutationProps) => {
                         },
                     });
                 });
-    }, [state.loaded]);
+    }, [state.loaded, state.loading]);
 
     return {
         ...state,
