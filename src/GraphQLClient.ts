@@ -81,14 +81,18 @@ export class GraphQLClient {
                 body: requestBody,
             })
                 .then(async (result) => {
-                    const data = await result.json();
-                    if( data.data && data.data[operationName] ) {
+                    const json = await result.json();
+                    if( json.data && json.data[operationName] ) {
                         // TODO extend object to resolved / error
-                        this.opts.cache.put(hash, data.data);
-                        resolve(data.data);
+                        this.opts.cache.put(hash, json.data);
+                        resolve(json.data);
                         return;
                     }
-                    reject(data.errors[0]);
+                    if( !json.errors?.length ) {
+                        resolve(json.data);
+                        return;
+                    }
+                    reject(json.errors[0]);
                 })
                 // TODO extend object to resolved / error
                 .catch((e) => reject(e));

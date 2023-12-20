@@ -1,6 +1,6 @@
 {
   "name": "@k8s-cloud-io/react-graphql",
-  "version": "1.0.37",
+  "version": "1.0.40",
   "main": "dist/index.js",
   "source": "./src/index.tsx",
   "types": "dist/index.d.ts",

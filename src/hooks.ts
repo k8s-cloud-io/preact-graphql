@@ -15,14 +15,14 @@ export const useQuery = (props: QueryProps) => {
         error: null
     });
 
-    const refresh = useCallback(() => {
+    const refresh = () => {
         setState({
             loaded: false,
             loading: true,
             data: null,
             error: null,
         })
-    }, []);
+    };
 
     useEffect(() => {
         if( state.loaded ) return;
@@ -64,15 +64,6 @@ export const useMutation = (props: MutationProps) => {
         error: null
     });
 
-    const refresh = useCallback(() => {
-        setState({
-            loaded: false,
-            loading: true,
-            data: null,
-            error: null,
-        })
-    }, []);
-
     useEffect(() => {
         if( state.loaded ) return;
             client
@@ -99,7 +90,6 @@ export const useMutation = (props: MutationProps) => {
 
     return {
         ...state,
-        client,
-        refresh
+        client
     }
 };
