@@ -5,7 +5,6 @@ import {
     MutationProps,
     QueryProps,
 } from './props';
-import {md5} from 'pure-md5';
 import {GraphQLClientError, GraphQLOperationError} from "./GraphQLError";
 
 export class GraphQLClient {
@@ -32,6 +31,11 @@ export class GraphQLClient {
         variables: KeyValuePair,
         requestType: string,
     ): Promise<any> {
+
+        if( !document || !requestType ) {
+            throw new GraphQLClientError('Unable to handle empty request');
+        }
+
         const operationType = document.definitions[0].operation;
         const operationName = document.definitions[0].name.value
 
@@ -63,15 +67,6 @@ export class GraphQLClient {
         }
 
         const requestBody = JSON.stringify(data);
-        const hash = `hash_${md5(requestBody)}`;
-        if( this.opts.cache.has(hash) ) {
-            // TODO extend object to resolved / error
-            const cache = this.opts.cache.get(hash);
-            return new Promise((resolve, _) => {
-                resolve(cache);
-            });
-        }
-
         return new Promise((resolve, reject) => {
             fetch(this.opts.uri, {
                 method: 'POST',
@@ -83,8 +78,6 @@ export class GraphQLClient {
                 .then(async (result) => {
                     const json = await result.json();
                     if( json.data && json.data[operationName] ) {
-                        // TODO extend object to resolved / error
-                        this.opts.cache.put(hash, json.data);
                         resolve(json.data);
                         return;
                     }
