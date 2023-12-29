@@ -50,9 +50,6 @@ export class GraphQLClient {
                     'Unable to start request: operation must be of type query: ' + operationType,
                 );
             }
-            data = Object.assign(data, {
-                query: document.toString(),
-            });
         }
 
         if (requestType === 'mutation') {
@@ -61,10 +58,11 @@ export class GraphQLClient {
                     'Unable to start request: operation must be of type mutation',
                 );
             }
-            data = Object.assign(data, {
-                query: document.toString(),
-            });
         }
+
+        data = Object.assign(data, {
+            query: document.toString(),
+        });
 
         const requestBody = JSON.stringify(data);
         return new Promise((resolve, reject) => {
