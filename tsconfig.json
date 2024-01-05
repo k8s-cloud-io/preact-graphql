@@ -11,6 +11,10 @@
     "declaration": true,
     "declarationDir": "./dist",
     "baseUrl": "./",
-    "sourceMap": false
+    "sourceMap": false,
+    "paths": {
+      "react": ["preact/compat"],
+      "react-dom": ["preact/compat"]
+    }
   }
 }
